@@ -39,7 +39,7 @@ export default async function preview(req, res) {
   if (req.query.type === 'post') {
     res.writeHead(307, { Location: `/posts/${post.slug}` });
   } else if (req.query.type === 'page') {
-    res.writeHead(307, { Location: `${page.slug}` });
+    res.writeHead(307, { Location: `/${page.slug}` });
   }
   res.end();
 }
