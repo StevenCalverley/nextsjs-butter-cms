@@ -11,9 +11,11 @@ export default async function preview(req, res) {
     return res.status(401).json({ message: 'Invalid token' });
   }
 
+  let post;
+  let page;
   if (req.query.type === 'post') {
     // Fetch the headless CMS to check if the provided `slug` exists
-    const post = await getPreviewPostBySlug(req.query.slug);
+    post = await getPreviewPostBySlug(req.query.slug);
 
     // If the slug doesn't exist prevent preview mode from being enabled
     if (!post) {
@@ -21,7 +23,7 @@ export default async function preview(req, res) {
     }
   } else if (req.query.type === 'page') {
     // Fetch the headless CMS to check if the provided `slug` exists
-    const page = await getPreviewPageBySlug(req.query.slug);
+    page = await getPreviewPageBySlug(req.query.slug);
 
     // If the slug doesn't exist prevent preview mode from being enabled
     if (!page) {
