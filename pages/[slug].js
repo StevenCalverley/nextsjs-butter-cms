@@ -4,14 +4,26 @@ import Container from '@/components/container';
 import Header from '@/components/header';
 import Layout from '@/components/layout';
 import { getAllPagesWithSlug, getPage } from '@/lib/api';
+import markdownStyles from '@/components/markdown-styles.module.css';
 
 import Head from 'next/head';
+import Image from 'next/image';
 import { CMS_NAME } from '@/lib/constants';
 
-export default function Pge({ page, preview }) {
+function renderHero(hero) {
+  if (!hero) return null;
+  return (
+    <div className="relative">
+      <div className="absolute w-full h-96">
+        <Image src={hero.image} layout="fill" className="object-cover" />
+      </div>
+    </div>
+  );
+}
+
+export default function Page({ page, preview }) {
   const router = useRouter();
-  console.log(!router.isFallback);
-  console.log(!page?.slug);
+
   if (!router.isFallback && !page?.slug) {
     return <ErrorPage statusCode={404} />;
   }
@@ -26,13 +38,14 @@ export default function Pge({ page, preview }) {
             <section>
               <Head>
                 <title>
-                  {page.title} | Next.js Blog Example with {CMS_NAME}
+                  {page.name} | Next.js Blog Example with {CMS_NAME}
                 </title>
                 <meta property="og:image" content={page.featured_image} />
               </Head>
 
-              <div>{page.name}</div>
+              <div>{renderHero(page.fields.hero)}</div>
               <div
+                className={markdownStyles['markdown']}
                 dangerouslySetInnerHTML={{ __html: page.fields.readme }}
               ></div>
             </section>
